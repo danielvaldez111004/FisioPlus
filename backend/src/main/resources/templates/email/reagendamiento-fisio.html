@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Reagendamiento — FisioPlus</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #8b5cf6, #7c3aed); padding: 32px 24px; text-align: center; }
+        .header h1 { color: #ffffff; margin: 0; font-size: 24px; }
+        .header p { color: #ddd6fe; margin: 8px 0 0; }
+        .body { padding: 32px 24px; }
+        .body h2 { color: #1e293b; font-size: 20px; margin-top: 0; }
+        .body p { color: #475569; line-height: 1.6; }
+        .alert-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+        .alert-box p { margin: 0; color: #92400e; font-size: 15px; }
+        .fecha-nueva { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 16px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+        .fecha-nueva p { margin: 0; color: #14532d; font-weight: bold; font-size: 16px; }
+        .actions { display: flex; gap: 12px; margin: 28px 0; flex-wrap: wrap; }
+        .btn { display: inline-block; padding: 14px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px; text-align: center; flex: 1; min-width: 160px; }
+        .btn-aceptar  { background-color: #22c55e; color: #ffffff; }
+        .btn-rechazar { background-color: #ef4444; color: #ffffff; }
+        .footer { background-color: #f8fafc; padding: 20px 24px; text-align: center; border-top: 1px solid #e2e8f0; }
+        .footer p { color: #94a3b8; font-size: 13px; margin: 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Cabecera -->
+    <div class="header">
+        <h1>🔄 FisioPlus</h1>
+        <p>Solicitud de Reagendamiento</p>
+    </div>
+
+    <!-- Cuerpo -->
+    <div class="body">
+        <h2>Hola, Dr(a). <span th:text="${fisioNombre}">Fisioterapeuta</span> 👋</h2>
+
+        <div class="alert-box">
+            <p>⚠️ Un paciente ha solicitado cambiar la fecha de su cita #<span th:text="${citaId}">123</span>.</p>
+        </div>
+
+        <p>La nueva fecha propuesta por el paciente es:</p>
+
+        <div class="fecha-nueva">
+            <p>📅 <span th:text="${nuevaFecha}">01/01/2025 a las 10:00</span></p>
+        </div>
+
+        <p>Por favor, toma una decisión:</p>
+
+        <div class="actions">
+            <a th:href="${urlAceptar}"  class="btn btn-aceptar">✅ Aceptar nueva fecha</a>
+            <a th:href="${urlRechazar}" class="btn btn-rechazar">❌ Rechazar y cancelar</a>
+        </div>
+
+        <p style="color: #94a3b8; font-size: 13px;">
+            Si ya tomaste una decisión, el otro enlace mostrará el estado actualizado sin realizar cambios adicionales.
+        </p>
+    </div>
+
+    <!-- Pie de página -->
+    <div class="footer">
+        <p>Este es un mensaje automático de <strong>FisioPlus</strong>. Por favor no respondas a este correo.</p>
+    </div>
+
+</div>
+</body>
+</html>

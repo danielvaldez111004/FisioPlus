@@ -6,7 +6,8 @@ import QrSimulator from '../components/QrSimulator';
 import {
   LayoutDashboard, Users, Stethoscope, Calendar, ClipboardList,
   PlusCircle, Trash2, Loader2, RefreshCw, QrCode, ToggleLeft, ToggleRight,
-  Building, Clock, Save, Edit, AlertCircle, Check, Settings
+  Building, Clock, Save, Edit, AlertCircle, Check, Settings, CreditCard,
+  ShieldCheck, Sparkles, Zap
 } from 'lucide-react';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -235,13 +236,29 @@ function FisioterapeutasView() {
 // ---- Pacientes ----
 function PacientesView() {
   const [items, setItems] = useState([]);
+  const [clinicas, setClinicas] = useState([]); 
+  const [selectedClinica, setSelectedClinica] = useState('');
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [form, setForm] = useState({ nombre:'', apellidoPaterno:'', apellidoMaterno:'', email:'', telefono:'', fechaNacimiento:'', sexo:'MASCULINO' });
 
-  const load = () => { setLoading(true); api.get('/pacientes').then(r => { setItems(r.data); setLoading(false); }).catch(() => setLoading(false)); };
+  const load = () => { 
+    setLoading(true);
+
+  // Primera petición
+  api.get('/pacientes')
+    .then(r => setItems(r.data))
+    .catch(err => console.error(err));
+
+  // Segunda petición
+  api.get('/clinicas')
+    .then(r => setClinicas(r.data))
+    .catch(err => console.error(err))
+    .finally(() => setLoading(false)); // Quita el loader general al terminar
+  };
+
   useEffect(load, []);
 
   const handleSubmit = async (e) => {
@@ -262,6 +279,10 @@ function PacientesView() {
     }
   };
 
+  const handlechangeClinica = (e) => {
+    setSelectedClinica(e.target.value);
+  }
+
   return (
     <div className="space-y-6 animate-fadeIn">
       <div className="page-header">
@@ -270,6 +291,17 @@ function PacientesView() {
           <button onClick={load} className="btn-secondary"><RefreshCw className="w-4 h-4" /></button>
           <button onClick={() => setShowForm(v => !v)} className="btn-primary"><PlusCircle className="w-4 h-4" /> Nuevo Paciente</button>
         </div>
+      </div>
+
+      <div>
+        <select id="clinicas-select" value={selectedClinica} onChange={handlechangeClinica} disabled={loading} className="form-select w-48">
+          <option value="">Seleccione una opcion</option>
+          {clinicas.map(clinica => (
+          <option key={clinica.id} value={clinica.id}>
+            {clinica.nombre}
+          </option>
+        ))}
+        </select>
       </div>
 
       {showForm && (
@@ -941,6 +973,59 @@ function ConfiguracionView() {
           </form>
         </div>
 
+      </div>
+
+      {/* Suscripción y Paquete Contratado */}
+      <div className="card p-6 bg-gradient-to-br from-slate-900 via-slate-800 to-medical-950 text-white shadow-xl relative overflow-hidden">
+        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-40 h-40 bg-medical-500/10 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-700/60">
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-medical-500/20 text-medical-300 rounded-2xl border border-medical-500/30">
+              <CreditCard className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-xl font-bold tracking-tight">Plan y Suscripción</h3>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 tracking-wider flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" /> {clinicInfo.tipoRegistro || 'PRUEBA'}
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 mt-0.5">Gestión de licencia operativa y capacidad del sistema</p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => alert('Para solicitar un cambio de plan, contratar más capacidad de pacientes/hora o agregar nuevas sucursales, por favor contacta al equipo de administración de FisioPlus.')}
+            className="btn-primary py-2 px-4 text-xs font-bold bg-medical-500 hover:bg-medical-400 text-white shadow-lg shadow-medical-500/25 border-0 flex items-center gap-2 self-start sm:self-auto"
+          >
+            <Zap className="w-4 h-4" /> Solicitar Cambio / Upgrade
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
+          <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700/50">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Capacidad Operativa</p>
+            <p className="text-2xl font-bold text-white mt-1 flex items-baseline gap-1">
+              {clinicInfo.pacientesPorHora ?? 4} <span className="text-xs font-normal text-slate-400">pacientes/hora</span>
+            </p>
+          </div>
+          
+          <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700/50">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Estado de la Suscripción</p>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <p className="text-lg font-bold text-emerald-400">Suscripción Activa</p>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-slate-800/60 border border-slate-700/50">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tipo de Licencia</p>
+            <p className="text-lg font-bold text-medical-300 mt-1 uppercase">
+              {clinicInfo.tipoRegistro === 'PRUEBA' ? 'Licencia de Evaluación' : 'Licencia Comercial'}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

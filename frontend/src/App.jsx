@@ -6,6 +6,7 @@ import SuperAdminPortal from './pages/SuperAdminPortal';
 import AdminPortal from './pages/AdminPortal';
 import FisioPortal from './pages/FisioPortal';
 import PacientePortal from './pages/PacientePortal';
+import ConfirmarCita from './pages/ConfirmarCita';
 
 // Route guard: redirects to login if not authenticated
 function PrivateRoute({ children, allowedRoles }) {
@@ -59,6 +60,9 @@ export default function App() {
           <PacientePortal />
         </PrivateRoute>
       } />
+
+      {/* Ruta PÚBLICA del módulo de recordatorios — accedida desde email/WhatsApp sin login */}
+      <Route path="/confirmar-cita/:token" element={<ConfirmarCita />} />
 
       {/* Catch-all */}
       <Route path="*" element={<Navigate to="/" replace />} />

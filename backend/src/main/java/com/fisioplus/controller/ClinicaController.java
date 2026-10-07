@@ -216,7 +216,27 @@ public class ClinicaController {
         if (user == null || user.getClinicaId() == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "No autorizado o no se encuentra asociado a ninguna clínica"));
         }
-        Long clinicaId = user.getClinicaId();
+        return saveHorariosForClinicaId(user.getClinicaId(), payload);
+    }
+
+    @GetMapping("/{id}/horarios")
+    public ResponseEntity<?> getHorariosByClinicaId(@PathVariable Long id) {
+        if (!isSuperAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Access denied. SUPER_ADMIN role required."));
+        }
+        List<HorarioClinica> horarios = horarioClinicaRepository.findByClinicaId(id);
+        return ResponseEntity.ok(horarios);
+    }
+
+    @PutMapping("/{id}/horarios")
+    public ResponseEntity<?> updateHorariosByClinicaId(@PathVariable Long id, @RequestBody List<Map<String, Object>> payload) {
+        if (!isSuperAdmin()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Access denied. SUPER_ADMIN role required."));
+        }
+        return saveHorariosForClinicaId(id, payload);
+    }
+
+    private ResponseEntity<?> saveHorariosForClinicaId(Long clinicaId, List<Map<String, Object>> payload) {
         List<HorarioClinica> existing = horarioClinicaRepository.findByClinicaId(clinicaId);
         
         for (Map<String, Object> hMap : payload) {

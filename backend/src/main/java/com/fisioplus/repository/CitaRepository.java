@@ -13,4 +13,7 @@ public interface CitaRepository extends JpaRepository<Cita, Long> {
     List<Cita> findByServicioContratadoId(Long servicioContratadoId);
     List<Cita> findByClinicaIdAndFechaInicioBetween(Long clinicaId, LocalDateTime start, LocalDateTime end);
     List<Cita> findByFisioterapeutaIdAndFechaInicioBetween(Long fisioterapeutaId, LocalDateTime start, LocalDateTime end);
+
+    /** Usado por el scheduler para encontrar citas en la ventana de 24h. */
+    List<Cita> findByEstatusAndFechaInicioBetween(String estatus, LocalDateTime inicio, LocalDateTime fin);
 }

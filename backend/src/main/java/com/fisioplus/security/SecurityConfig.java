@@ -38,6 +38,13 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/index.html", "/specs-data.js", "/*.md", "/favicon.ico").permitAll()
+                // Rutas públicas del módulo de recordatorios (accedidas desde email/WhatsApp sin JWT)
+                .requestMatchers(
+                        "/api/recordatorios/token/**",
+                        "/api/recordatorios/confirmar/**",
+                        "/api/recordatorios/cancelar/**",
+                        "/api/recordatorios/reagendar/**"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

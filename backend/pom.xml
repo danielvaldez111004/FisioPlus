@@ -16,7 +16,15 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>fisioplus-backend</name>
     <description>FisioPlus multi-tenant physiotherapy management backend REST API</description>
-    
+
+    <!-- Repositorio JitPack para WhatsappWeb4j -->
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -79,6 +87,33 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- ============================================================ -->
+        <!-- Módulo de Recordatorios y Notificaciones                     -->
+        <!-- ============================================================ -->
+
+        <!-- Correo electrónico via SMTP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!-- Templates HTML para los emails (Thymeleaf) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
+
+        <!-- WhatsApp Web4j (API no oficial Multi-Device) -->
+        <dependency>
+            <groupId>com.github.auties00</groupId>
+            <artifactId>whatsappweb4j</artifactId>
+            <version>3.4.7</version>
         </dependency>
     </dependencies>
     

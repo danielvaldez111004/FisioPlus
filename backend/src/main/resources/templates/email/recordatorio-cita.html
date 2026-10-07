@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recordatorio de Cita — FisioPlus</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .header { background: linear-gradient(135deg, #0ea5e9, #0284c7); padding: 32px 24px; text-align: center; }
+        .header h1 { color: #ffffff; margin: 0; font-size: 24px; }
+        .header p { color: #bae6fd; margin: 8px 0 0; }
+        .body { padding: 32px 24px; }
+        .body h2 { color: #1e293b; font-size: 20px; margin-top: 0; }
+        .body p { color: #475569; line-height: 1.6; }
+        .fecha-box { background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 16px; border-radius: 0 8px 8px 0; margin: 20px 0; }
+        .fecha-box p { margin: 0; color: #0c4a6e; font-weight: bold; font-size: 16px; }
+        .actions { display: flex; gap: 12px; margin: 28px 0; flex-wrap: wrap; }
+        .btn { display: inline-block; padding: 14px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px; text-align: center; flex: 1; min-width: 140px; }
+        .btn-confirmar { background-color: #22c55e; color: #ffffff; }
+        .btn-cancelar  { background-color: #ef4444; color: #ffffff; }
+        .btn-reagendar { background-color: #f59e0b; color: #ffffff; }
+        .footer { background-color: #f8fafc; padding: 20px 24px; text-align: center; border-top: 1px solid #e2e8f0; }
+        .footer p { color: #94a3b8; font-size: 13px; margin: 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Cabecera -->
+    <div class="header">
+        <h1>🏥 FisioPlus</h1>
+        <p>Sistema de Gestión Fisioterapéutica</p>
+    </div>
+
+    <!-- Cuerpo -->
+    <div class="body">
+        <h2>Hola, <span th:text="${nombre}">Paciente</span> 👋</h2>
+
+        <p>
+            Te recordamos que tienes una cita de fisioterapia programada para <strong>mañana</strong>.
+            Por favor, confirma tu asistencia para que podamos preparar tu sesión.
+        </p>
+
+        <div class="fecha-box">
+            <p>📅 Fecha y hora: <span th:text="${fechaCita}">01/01/2025 a las 10:00</span></p>
+        </div>
+
+        <p>Selecciona una de las siguientes opciones:</p>
+
+        <div class="actions">
+            <a th:href="${urlConfirmar}" class="btn btn-confirmar">✅ Confirmar Cita</a>
+            <a th:href="${urlCancelar}"  class="btn btn-cancelar">❌ Cancelar</a>
+            <a th:href="${urlReagendar}" class="btn btn-reagendar">🔄 Reagendar</a>
+        </div>
+
+        <p style="color: #94a3b8; font-size: 13px;">
+            ⚠️ Este enlace es de uso único y expira después de la hora de tu cita.
+            Si ya realizaste una acción, los demás enlaces mostrarán el estado actualizado.
+        </p>
+    </div>
+
+    <!-- Pie de página -->
+    <div class="footer">
+        <p>Este es un mensaje automático de <strong>FisioPlus</strong>. Por favor no respondas a este correo.</p>
+        <p style="margin-top: 8px;">Si tienes dudas, contacta directamente a tu clínica.</p>
+    </div>
+
+</div>
+</body>
+</html>
